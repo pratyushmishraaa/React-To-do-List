@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import React, { useState } from 'react';
+import "./App.css"
+
+function TodoList() {
+  const [tasks, setTasks] = useState([]);
+  const [input, setInput] = useState('');
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    setTasks([...tasks, input]);
+    setInput('');
+  };
+
+  const deleteTask = index => {
+    const newTasks = [...tasks];
+    newTasks.splice(index, 1);
+    setTasks(newTasks);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='cont'>
+      <h1>To-Do List</h1>
+      <form onSubmit={handleSubmit}>
+        <input value={input} onChange={event => setInput(event.target.value)} placeholder="Add Your Task" />
+        <button type="submit"><i class="fa fa-check fa-2x" aria-hidden="true"></i></button>
+      </form>
+      <ul>
+        {tasks.map((task, index) => (
+          <li key={index}>
+            {task}
+            <button id='btn-del' onClick={() => deleteTask(index)}><i class="fa-solid fa-trash-can fa-2x"></i></button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default App;
+export default TodoList;
+

@@ -10,6 +10,70 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script src="https://kit.fontawesome.com/a0190e1b4e.js" crossorigin="anonymous"></script>
+
+
+    <script>
+      
+const inputBox = document.querySelector(".inputField input");
+const addBtn = document.querySelector(".inputField button");
+const todoList = document.querySelector(".todoList");
+const deleteAllBtn = document.querySelector(".footer button");
+
+showTask();
+addBtn.onclick = () => {
+    let userData = inputBox.value;
+    let getLocalStorage = localStorage.getItem("new todo");
+    if (getLocalStorage == null) {
+        listArr = [];
+    } else {
+        listArr = JSON.parse(getLocalStorage);
+    }
+    listArr.push(userData);
+    localStorage.setItem("new todo", JSON.stringify(listArr));
+    showTask();
+};
+
+function showTask() {
+    let getLocalStorage = localStorage.getItem("new todo");
+    if (getLocalStorage == null) {
+        listArr = [];
+    } else {
+        listArr = JSON.parse(getLocalStorage);
+
+        const pendingNumb = document.querySelector(".pendingNumb");
+        pendingNumb.textContent = listArr.length;
+
+        let newLiTag = "";
+        listArr.forEach((element, index) => {
+            newLiTag += `<li> ${element}<span onclick="deleteTask(${index})";><i class="fa-solid fa-trash"></i></span></li>`;
+        });
+        todoList.innerHTML = newLiTag;
+        inputBox.value = "";
+    }
+}
+
+//delete task function from storage...................................................
+function deleteTask(index) {
+    let getLocalStorage = localStorage.getItem("new todo");
+    listArr = JSON.parse(getLocalStorage);
+    listArr.splice(index, 1);
+
+    localStorage.setItem("new todo", JSON.stringify(listArr));
+    showTask();
+}
+
+deleteAllBtn.onclick = () => {
+    listArr = [];
+    localStorage.setItem("new todo", JSON.stringify(listArr));
+    showTask();
+};
+    </script>
+
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
